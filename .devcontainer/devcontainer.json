@@ -1,0 +1,42 @@
+{
+    "name": "Hackhathon UNIBG Dev Container",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "options": [
+            "--network=host"
+        ],
+        // "args": {
+        //     "_HOST_MACHINE": "${localEnv:OS}:${localEnv:VERTEX_PRODUCT}:ailab",
+        //     "DOCKER_GID": "997"
+        // }
+    },
+    // "remoteUser": "vscode",
+    // "forwardPorts": [
+    //     8888
+    // ],
+    // "containerEnv": {
+    //     "_HOST_MACHINE": "${localEnv:OS}:${localEnv:VERTEX_PRODUCT}:ailab",
+    // },
+    // "dockerBuild": {
+    //     "builder": "default"
+    // },
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+    ],
+    "features": {},
+    "customizations": {
+        "extensions": [
+            "ms-python.python",
+            "mhutchie.git-graph",
+            "ms-toolsai.jupyter",
+            "ms-toolsai.jupyter-keymap",
+            "ms-toolsai.jupyter-renderers",
+            "ms-python.vscode-pylance",
+            "ms-azuretools.vscode-docker",
+            "ms-vscode-remote.remote-containers",
+            "github.copilot",
+            "github.copilot-chat"
+        ]
+    }
+}

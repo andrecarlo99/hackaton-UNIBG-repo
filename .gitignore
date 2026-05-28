@@ -1,0 +1,49 @@
+# ignore: system folders
+**/.ipynb_checkpoints/
+**/__pycache__
+
+# ignore: data folder and its content >> adesso mi serve invece
+# data/**
+
+.env
+
+# ignore: logs folder and its content
+logs/**
+
+# ignore: virtual env file and folders
+.venv
+build
+*.egg-info
+
+# ignore: data files everywhere
+*.pkl
+*.parquet
+*.csv
+*.xls
+*.xlsx
+*.png
+*.jpg
+
+# ignore: every file or folder that starts with ignore
+**/ignore*
+
+# keep: usefull files
+!**/.gitkeep
+!notebooks/tutorials/tutorials_config.xlsx
+!pyproject.toml
+!devsettings.toml
+!config/project.toml
+!src/config/*.xlsx
+.specify/
+specs/
+
+# Ignore dynaconf secret files
+.secrets.*
+config/.secrets.env
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+dist/
+
+# Ignore registry cache
+.pt_registry_cache.json

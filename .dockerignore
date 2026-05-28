@@ -1,0 +1,8 @@
+# ignore: useless image folders
+data/
+docs/
+notebooks/
+logs/*
+
+# ignore: every file or folder that starts with ignore
+ignore*

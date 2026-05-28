@@ -1,0 +1,89 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "be-uffbda-hackaton-unibg-app"
+version = "1.0.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "kfp>=2.11.0",
+    "loguru>=0.7.3",
+    "python-on-whales>=0.75.1",
+    "typer>=0.15.1",
+    "rich>=13.7.0",
+    "dotenv>=0.9.9",
+    "click==8.1.7",
+    "toml==0.10.2",
+    "pytz==2025.2",
+    "pandas==2.3.0",
+    "jinja2==3.1.6",
+    "openpyxl==3.1.5",
+    "pyarrow==20.0.0",
+    "ruff>=0.14.0",
+    "dynaconf>=3.2.12",
+    "validate-pyproject>=0.24.1",
+    "conventional-pre-commit>=4.3.0",
+    "pre-commit-hooks>=6.0.0",
+    "pre-commit>=4.3.0",
+    "pandas-gbq>=0.30.0",
+    "docker>=7.1.0",
+    "fastapi",
+    "uvicorn",
+    "openai>=0.27.0",
+    "python-dotenv",
+    "pydantic>=2.0.0",
+    "scikit-learn>=1.4.0",
+    "langchain>=0.1.0",
+    "langgraph>=0.1.0",
+    "pdf2image>=1.16.0",
+    "pytesseract>=0.3.10",
+    "pexpect==4.9.0",
+    "langchain-openai>=1.2.1",
+]
+
+[project.scripts]
+pt = "launcher:main"
+
+[project.optional-dependencies]
+dev = [
+    "ipykernel",
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.7.0",
+    "isort>=5.12.0",
+    "mypy>=1.18.2",
+    
+]
+setup = ["rich>=13.7.0", "typer>=0.15.1", "loguru>=0.7.3"]
+all = ["be-uffbda-hackaton-unibg-app[dev,setup]"]
+
+validation = [
+    "tdigest==0.5.2.2"
+]
+
+[tool.uv]
+package = true
+
+# Explicit build instructions for Hatch
+[tool.hatch.build.targets.wheel]
+packages = ["project_template"]
+include = ["launcher.py"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "project_template",
+  "launcher.py",
+  "pyproject.toml",
+  "README.md",
+  "LICENCE",
+  "AGENTS.md",
+  "COPILOT_SETUP.md"
+]
+
+base = [
+    "numpy>=2.3.4",
+    "pandas>=2.3.0",
+]
