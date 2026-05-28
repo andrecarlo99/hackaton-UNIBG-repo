@@ -1,0 +1,46 @@
+[
+  {
+    "invoice_number": "82204157",
+    "issue_date": "11/24/2023",
+    "seller": {
+      "seller_name": "Nova Tech Solutions SRL",
+      "seller_address": "Via dei Mille 12, 20121 Milano, MI",
+      "seller_tax_id": "IT01234567890"
+    },
+    "client": {
+      "client_name": "Global Logistics SpA",
+      "client_address": "Corso Italia 45, 10121 Torino, TO",
+      "client_tax_id": "IT09876543210"
+    },
+    "payment_details": {
+      "iban": "IT56X12345678901234567890"
+    },
+    "items": [
+      {
+        "item_id": 1,
+        "description": "Professional Workstation Z-Series",
+        "quantity": 2.0,
+        "unit_measure": "each",
+        "net_price": 1200.0,
+        "net_worth": 2400.0,
+        "vat_rate": 0.22,
+        "gross_worth": 2928.0
+      },
+      {
+        "item_id": 2,
+        "description": "UltraWide Monitor 34 inch 4K",
+        "quantity": 4.0,
+        "unit_measure": "each",
+        "net_price": 450.0,
+        "net_worth": 1800.0,
+        "vat_rate": 0.22,
+        "gross_worth": 2196.0
+      }
+    ],
+    "summary": {
+      "total_net_worth": 4200.0,
+      "total_vat": 924.0,
+      "total_gross_worth": 5124.0
+    }
+  }
+]

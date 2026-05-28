@@ -42,6 +42,7 @@ dependencies = [
     "pytesseract>=0.3.10",
     "pexpect==4.9.0",
     "langchain-openai>=1.2.1",
+    "fpdf2>=2.8.0",
 ]
 
 [project.scripts]
