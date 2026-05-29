@@ -1,0 +1,32 @@
+{
+  "run_id": "notebook_v4",
+  "total_records_evaluated": 1,
+  "pdf_physically_evaluated": 1,
+  "kpi_metrics": {
+    "key_value_match_rate_percent": 61.9,
+    "pii_leakage_rate_percent": 0.0,
+    "visual_match_rate_percent": 69.23,
+    "schema_compliance": "Fallito"
+  },
+  "details": {
+    "rendering_issues_found": 4,
+    "sample_rendering_errors": [
+      {
+        "chiave": "seller_tax_id",
+        "valore_illeggibile": "it12345678901"
+      },
+      {
+        "chiave": "seller_iban",
+        "valore_illeggibile": "it99x000001234567890123456"
+      },
+      {
+        "chiave": "client_tax_id",
+        "valore_illeggibile": "it98765432109"
+      },
+      {
+        "chiave": "items",
+        "valore_illeggibile": "[{'item_id': 1, 'item_description': 'clearance! fast dell desktop computer pc dual core windows 10 4/8/16gb ram', 'item_quantity': 3.0, 'item_unit_measure': 'each', 'item_net_price': 209.0, 'item_net_worth': 627.0, 'item_vat_percent': 10.0, 'item_gross_worth': 689.7}, {'item_id': 2, 'item_description': 'hp t520 thin client computer amd gx-212jc 1.2ghz 4gb ram tested !!read below!!', 'item_quantity': 5.0, 'item_unit_measure': 'each', 'item_net_price': 37.75, 'item_net_worth': 188.75, 'item_vat_percent': 10.0, 'item_gross_worth': 207.63}, {'item_id': 3, 'item_description': 'gaming pc desktop computer', 'item_quantity': 1.0, 'item_unit_measure': 'each', 'item_net_price': 400.0, 'item_net_worth': 400.0, 'item_vat_percent': 10.0, 'item_gross_worth': 440.0}, {'item_id': 4, 'item_description': '12-core gaming computer desktop pc tower affordable gaming pc 8gb amd vega rgb', 'item_quantity': 3.0, 'item_unit_measure': 'each', 'item_net_price': 464.89, 'item_net_worth': 1394.67, 'item_vat_percent': 10.0, 'item_gross_worth': 1534.14}, {'item_id': 5, 'item_description': 'custom build dell optiplex 9020 mt i5-4570 3.20ghz desktop computer pc', 'item_quantity': 5.0, 'item_unit_measure': 'each', 'item_net_price': 221.99, 'item_net_worth': 1109.95, 'item_vat_percent': 10.0, 'item_gross_worth': 1220.95}, {'item_id': 6, 'item_description': 'dell optiplex 990 mt computer pc quad core i7 3.4ghz 16gb 2tb hd windows 10 pro', 'item_quantity': 4.0, 'item_unit_measure': 'each', 'item_net_price': 269.95, 'item_net_worth': 1079.8, 'item_vat_percent': 10.0, 'item_gross_worth': 1187.78}, {'item_id': 7, 'item_description': 'dell core 2 duo desktop computer | windows xp pro | 4gb | 500gb', 'item_quantity': 5.0, 'item_unit_measure': 'each', 'item_net_price': 168.0, 'item_net_worth': 840.0, 'item_vat_percent': 10.0, 'item_gross_worth': 924.0}]"
+      }
+    ]
+  }
+}
