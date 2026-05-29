@@ -57,7 +57,7 @@ def extract_text_from_pdf(pdf_path: str) -> str:
 
 def build_llm(temperature: float = 0.3):
     return ChatOpenAI(
-        model="google/gemma-4-31b-it",
+        model="anthropic/claude-opus-4.7",
         base_url="https://openrouter.ai/api/v1",
         api_key=OPEN_ROUTER_KEY,
         temperature=temperature,
@@ -227,8 +227,110 @@ def generate_pdf_node(state: AgentState) -> dict:
             break
 
     records = json.loads(state["validated_data"])
+    if not records:
+        logger.error("Nessun record da inserire nel PDF")
+        return {"pdf_path": ""}
+
+    record = records[0]
+
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_auto_page_break(auto=True, margin=15)
+
+    # --- Titolo ---
+    doc_title = str(record.get("document_type", record.get("doc_type", "SYNTHETIC DOCUMENT"))).upper()
+    pdf.set_font("Helvetica", "B", 18)
+    pdf.set_text_color(30, 60, 120)
+    pdf.cell(0, 12, doc_title, new_x="LMARGIN", new_y="NEXT", align="C")
+    pdf.set_line_width(0.5)
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+    pdf.ln(6)
+
+    pdf.set_text_color(40, 40, 40)
+    pdf.set_font("Helvetica", "B", 11)
+    pdf.cell(0, 8, "DOCUMENT DATA", new_x="LMARGIN", new_y="NEXT")
+    pdf.set_font("Helvetica", "", 10)
+    
+    lists_to_render = []
+
+    # Iterazione strutturata direttamente sulle chiavi estratte dal record validato
+    for name, val in record.items():
+        if not val or str(val).strip() == "None" or val == [] or val == {}:
+            continue
+        if name in ["document_type", "doc_type"]:
+            continue
+
+        if isinstance(val, list):
+            lists_to_render.append((name, val))
+            continue
+
+        if isinstance(val, dict):
+            pdf.set_font("Helvetica", "B", 10)
+            pdf.cell(0, 6, f"{str(name).replace('_', ' ').upper()}:", new_x="LMARGIN", new_y="NEXT")
+            pdf.set_font("Helvetica", "", 10)
+            for k, v in val.items():
+                if v and str(v) != "None":
+                    pdf.cell(0, 6, f"   - {str(k).replace('_', ' ').title()}: {str(v)[:80]}", new_x="LMARGIN", new_y="NEXT")
+        else:
+            formatted_name = str(name).replace('_', ' ').title()
+            pdf.cell(0, 6, f"{formatted_name}: {str(val)[:80]}", new_x="LMARGIN", new_y="NEXT")
+
+    pdf.ln(6)
+
+    # --- Generazione Tabelle di liste ---
+    for list_name, list_data in lists_to_render:
+        if not list_data or not isinstance(list_data[0], dict):
+            continue 
+            
+        pdf.set_font("Helvetica", "B", 11)
+        pdf.cell(0, 8, str(list_name).replace('_', ' ').upper(), new_x="LMARGIN", new_y="NEXT")
+        
+        headers = list(list_data[0].keys())
+        num_cols = len(headers)
+        col_width = 190 / max(num_cols, 1) 
+        
+        pdf.set_fill_color(30, 60, 120)
+        pdf.set_text_color(255, 255, 255)
+        pdf.set_font("Helvetica", "B", 9)
+        for h in headers:
+            pdf.cell(col_width, 8, str(h).replace('_', ' ').title()[:15], border=1, fill=True, align="C", new_x="RIGHT", new_y="LAST")
+        pdf.ln()
+        
+        pdf.set_text_color(40, 40, 40)
+        pdf.set_font("Helvetica", "", 9)
+        for item in list_data:
+            for h in headers:
+                val = str(item.get(h, ""))[:20]
+                pdf.cell(col_width, 7, val, border=1, align="C", new_x="RIGHT", new_y="LAST")
+            pdf.ln()
+        pdf.ln(6)
+
+    # --- Footer ---
+    pdf.ln(10)
+    pdf.set_font("Helvetica", "I", 8)
+    pdf.set_text_color(150, 150, 150)
+    pdf.cell(0, 5, "This is a synthetic document generated for testing purposes.", align="C", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(0, 5, f"Run ID: {run_id}", align="C", new_x="LMARGIN", new_y="NEXT")
+
+    run_dir = os.path.join(OUTPUT_DIR, run_id)
+    os.makedirs(run_dir, exist_ok=True)
+    
+    pdf_path = os.path.join(run_dir, "synthetic_document.pdf")
+    pdf.output(pdf_path)
+    logger.info(f"PDF sintetico salvato nel workflow di produzione: {pdf_path}")
+
+    return {"pdf_path": pdf_path}
+    logger.info("[Agente 5] Generazione PDF sintetico Dinamico")
+
+    run_id = ""
+    for msg in state["messages"]:
+        if hasattr(msg, "content") and "run_id:" in str(msg.content):
+            run_id = str(msg.content).replace("run_id:", "").strip()
+            break
+
+    records = json.loads(state["validated_data"])
     schema = json.loads(state["document_schema"])
-    # source = json.loads(state["source_data"]) # Decommenta se ti serve in futuro
+    source = json.loads(state["source_data"])
 
     if not records:
         logger.error("Nessun record da inserire nel PDF")
@@ -251,7 +353,7 @@ def generate_pdf_node(state: AgentState) -> dict:
 
     pdf.set_text_color(40, 40, 40)
 
-    # --- ITERAZIONE DINAMICA SUI CAMPI SEMPLICI ---
+    # 2. ITERAZIONE DINAMICA SUI CAMPI SEMPLICI
     pdf.set_font("Helvetica", "B", 11)
     pdf.cell(0, 8, "DOCUMENT DATA", new_x="LMARGIN", new_y="NEXT")
     pdf.set_font("Helvetica", "", 10)
@@ -286,7 +388,7 @@ def generate_pdf_node(state: AgentState) -> dict:
 
     pdf.ln(6)
 
-    # --- RENDERIZZAZIONE DINAMICA DELLE TABELLE (Liste) ---
+    # 3. RENDERIZZAZIONE DINAMICA DELLE TABELLE (Liste)
     for list_name, list_data in lists_to_render:
         if not list_data or not isinstance(list_data[0], dict):
             continue # Salta liste non di oggetti
@@ -317,7 +419,7 @@ def generate_pdf_node(state: AgentState) -> dict:
             pdf.ln()
         pdf.ln(6)
 
-    # --- Footer ---
+        # --- Footer ---
     pdf.ln(10)
     pdf.set_font("Helvetica", "I", 8)
     pdf.set_text_color(150, 150, 150)
