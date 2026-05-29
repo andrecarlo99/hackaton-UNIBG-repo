@@ -58,7 +58,7 @@ def extract_text_from_pdf(pdf_path: str) -> str:
 
 def build_llm(temperature: float = 0.3):
     return ChatOpenAI(
-        model="google/gemma-4-31b-it",
+        model="anthropic/claude-opus-4.8",
         base_url="https://openrouter.ai/api/v1",
         api_key=OPEN_ROUTER_KEY,
         temperature=temperature,
